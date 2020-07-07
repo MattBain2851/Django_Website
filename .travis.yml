@@ -1,0 +1,20 @@
+language: python
+services:
+  - postgresql
+python:
+  - "3.7"
+cache: pip
+install:
+  - pip install -r requirements.txt
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+script:
+  - python manage.py test
+deploy:
+  provider: heroku
+  api_key:
+    secure: "d326a873-639f-41d0-b3e9-4c1d180128b1"
+  app: shopper-share
+  on:
+    repo: uva-cs3240-f19/project-103-dddmg
+    branch: adding_travis

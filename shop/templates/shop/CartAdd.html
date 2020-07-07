@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-sm-6 offset-sm-3 text-center">
+    <h2 class="text-center"> Shopping Cart</h2>
+    <h2 class="text-center">
+        <li><a href="{% url 'shop:store' %}">Continue Shopping</a></li>
+    </h2>
+
+    <form action = "{% url 'shop:cart_add' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="item_name">Item Name</input>
+        <input type="price" name="item_price">Item Price</input>
+        <input type="submit" value = "Submit Item"/>
+    </form>
+    <li><a href="{% url 'shop:shopping_list' %}">Link to Current Shopping List</a></li>
+</div>
+{% endblock %}

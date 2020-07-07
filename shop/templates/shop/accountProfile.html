@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load staticfiles %}
+<h1> Welcome, {{ user.first_name }}!</h1>
+<ul>
+
+    <img src=" {{fileName}} " width="130" height="130" alt="" hspace="8" vspace="8" align="left">
+
+
+
+    Here is your account info <br>
+    Email: {{ user.email }} <br>
+
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Change Picture </button>
+    </form>
+
+
+</ul>
+<div class="row " style="overflow-y: scroll;max-height: 50%;">
+    <div class=" col col-md m-3" style="border: 2px solid black">
+        <h3 align="center"> My Orders!</h3>
+        {% if made_order_list %}
+
+<!--
+  Commented out during merging of DanFinalSprint
+        <ul class="list-unstyled">
+            {% for order in made_order_list %}
+            <div class="row ">
+                <li>
+                    <div class="col" style=" background-color: aquamarine">
+                        <h5>{{order.time_of_order}}</h5>
+                    </div>
+                    {% for shopping_cart in order.item_list.all %}
+                    <ul class="list-unstyled">
+                        <li>
+                            <h6>
+                                {{shopping_cart.item_quantity}}: {{shopping_cart.item_name}}
+                            </h6>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                    Status:
+                    {% if order.status == "unaccepted" %}
+                    <img src="{% static '/shop/images/processing.png' %}" width="40" height="40" alt="">
+                    Awaiting Driver
+                    {% endif %}
+                    {% if order.status == "inprogress" %}
+                    <img src="{% static '/shop/images/delivery-truck.png' %}" width="40" height="40" alt="">
+                    In Progress
+                    {% endif %}
+                    {% if order.status == "completed" %}
+                    <img src="{% static '/shop/images/maps-and-flags.png' %}" width="40" height="40" alt="">
+                    Complete
+
+                    {% endif %}
+
+                </li>
+            </div>
+            {% endfor %}
+        </ul>
+-->
+            <ul class="list-unstyled">
+
+                {% for order in made_order_list %}
+                <div class= "row">
+                <!-- <div class= "form-row justify-content-center">-->
+                    <li><div class="col" style=" background-color: aquamarine">
+                        <h5>{{order.time_of_order}}</h5>
+                    </div>
+                        {% for shopping_cart in order.item_list.all %}
+                        <ul class ="list-unstyled">
+                            <li>
+                                <h6>
+                                    {{shopping_cart.item_quantity}}:    {{shopping_cart.item_name}}
+                                </h6>
+                            </li>
+                        </ul>
+                     
+                        {% endfor %}
+                        Status:
+                        {% if order.status == "unaccepted" %}
+                            <img src="{% static '/shop/images/processing.png' %}" width="40" height="40" alt="">
+                            Awaiting Driver
+                        {% endif %}
+                        {% if order.status == "inprogress" %}
+                            <img src="{% static '/shop/images/delivery-truck.png' %}" width="40" height="40" alt="">
+                            In Progress
+                        {% endif %}
+                        {% if order.status == "completed" %}
+                            <img src="{% static '/shop/images/maps-and-flags.png' %}" width="40" height="40" alt="">
+                            Complete
+
+                        {% endif %}
+
+                    </li>
+            </div>
+                <p>     </p>
+        {% endfor %}
+    </ul>
+
+
+        <!-- TODO This is buried by the footer -->
+        <!-- Currently there is an invisible char (alt+255) between the <p> to give it an extra line -->
+        <p>   </p> <br>
+        {% else %}
+        <p>No Personal Orders Have Been Made</p>
+        {% endif %}
+    </div>
+    <!-- TODO This column does not like to be filled -->
+    <div class=" col col-md m-3" style="border: 2px solid black">
+        <h3 align="center">My Deliveries!</h3>
+        {% if order_list %}
+        <a class="btn btn-primary" href="{% url 'shop:personal_orders' %}" role="button">See Uncompleted Orders </a>
+        <br>
+        <ul class="list-unstyled">
+            {% for item in order_list %}
+            <div class="row">
+            <!--<div class="form-row justify-content-center">-->
+                <li>
+                    <div class="col" style="background-color: aquamarine">
+                        <h5>{{item.time_of_order}}</h5>
+                    </div>
+
+                    {{item.delivery_address_PartA}} {{item.delivery_address_PartB}}, <br>{{item.delivery_address_City}},
+                    {{item.delivery_address_State}} {{item.delivery_address_ZIP}}<br>
+                    Notes: {{item.notes}} <br>
+                    Status:
+                    {% if item.status == "unaccepted" %}
+                    <img src="{% static '/shop/images/processing.png' %}" width="40" height="40" alt="">
+                    Awaiting Driver
+                    {% endif %}
+                    {% if item.status == "inprogress" %}
+                    <img src="{% static '/shop/images/delivery-truck.png' %}" width="40" height="40" alt="">
+                    In Progress
+                    {% endif %}
+                    {% if item.status == "completed" %}
+                    <img src="{% static '/shop/images/maps-and-flags.png' %}" width="40" height="40" alt="">
+                    Complete
+
+                    {% endif %}
+                </li>
+            </div>
+            <p>     </p>
+
+        {% endfor %}
+
+
+
+        </ul>
+    </div>
+
+    <!-- TODO This is buried by the footer -->
+    <!-- Currently there is an invisible char (alt+255) between the <p> to give it an extra line -->
+    <p>   </p> <br>
+    {% else %}
+    <p>No Orders Have been Taken</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+</b></b></b></b></b>

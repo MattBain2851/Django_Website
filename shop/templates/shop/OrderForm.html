@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- References
+Title: Bootstrap Forms
+Author: Bootstrap Documentation
+Date: 12/01
+Code Version: couldn't find it
+URL: https://getbootstrap.com/docs/4.0/components/forms/
+Software License: MIT License -->
+<div class="col-sm-6 offset-sm-3 text-center">
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% if shopping_list %}
+
+        <script>
+            var run_total = 0;
+        </script>
+        <h2 class="center"> Your Order: </h2>
+        <ul  class="list-unstyled">
+            {% for item in shopping_list %}
+
+
+                    <li>
+                        <div class="row align-items-center" style='border:1px solid black;'>
+                            <div class="col" style='border-right:1px solid #ccc'>
+                                <img src={{item.item_picture}} class="img-fluid" height="60%" width="60%" >
+                            </div>
+                            <div class="col">
+                                <!--Price: ${{ item.item_price }}  |  Quantity: {{item.item_quantity}} -->
+                        <script>
+                            var quant = parseFloat({{ item.item_quantity }});
+                            var price = parseFloat({{ item.item_price }});
+                            price = price.toFixed(2) * 100;
+                            it_price = quant * price
+                            run_total = run_total + it_price;
+                            //  var total_ind = price * quant;
+                            //  run_total += total_ind;
+                            //  document.write(total_ind);
+                            document.write("Subtotal: $" + (it_price.toFixed(2) / 100));
+                            document.write("<br><br>");
+                        </script>
+                            </div>
+                        </div>
+                        <!--style="padding:1px;border:thin solid black;"-->
+
+                    </li>
+
+            {% endfor %}
+            <script>
+                //document.write("<br>");
+                document.write("<h2> Total: $" + run_total.toFixed(2) / 100 + "</h2>");
+            </script>
+            {% endif %}
+        </ul>
+
+
+</div>
+<h2> Billing Information</h2>
+<div class="row">
+    <div class="form-group col-md-12">
+      <label for="Name">Name on Card</label>
+      <input type="text" class="form-control" id="Name" >
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-12">
+      <label for="Number">Card Number</label>
+      <input type="text" class="form-control" id="Number" placeholder="XXXX-XXXX-XXXX-XXXX" >
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-6">
+      <label for="Exp">Expiration Date</label>
+      <input type="text" class="form-control" id="Exp" placeholder="XX/XX" >
+    </div>
+    <div class="form-group col-md-6">
+      <label for="cvv"> Security Code</label>
+      <input type="text" class="form-control" id="cvv">
+    </div>
+</div>
+    <form action="{% url 'shop:orderadd' %}" method="post">
+        {% csrf_token %}
+
+            <input type="hidden" name="order_id" value="1" /> <br>
+            <input type="hidden" name="driver_id" value="confused" /> <br>
+            <input type="hidden" name="item_list" value="{{user.shopping_list}}" /> <br>
+            <input type="hidden" name="recipient_email" value={{user.email}} /> <br>
+
+
+
+<h2>Delivery Information</h2>
+  <div class="form-group">
+    <label for="inputAddress">Address</label>
+    <input type="text" class="form-control" id="inputAddress" name="delivery_address_PartA" required placeholder="130 Rice Hall">
+  </div>
+  <div class="form-group">
+    <label for="inputAddress2">Address 2</label>
+    <input type="text" class="form-control" id="inputAddress2" name="delivery_address_PartB" placeholder="1st Floor">
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputCity">City</label>
+      <input type="text" class="form-control" id="inputCity" name="delivery_address_City" required>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">State</label>
+      <select id="inputState" class="form-control" name="delivery_address_State" required>
+        <option>Alabama</option>
+        <option>Alaska</option>
+          <option>Arizona</option>
+          <option>Arkansas</option>
+          <option>California </option>
+          <option>Colorado </option>
+          <option>Connecticut </option>
+          <option>Delaware </option>
+          <option>Florida </option>
+          <option>Georgia </option>
+          <option>Hawaii </option>
+          <option>Idaho </option>
+          <option>Illinois </option>
+          <option>Indiana </option>
+          <option>Iowa </option>
+          <option>Kansas </option>
+          <option>Kentucky </option>
+          <option>Louisiana </option>
+          <option>Maine </option>
+          <option>Maryland </option>
+          <option>Massachusetts </option>
+          <option>Michigan </option>
+          <option>Minnesota </option>
+          <option>Mississippi </option>
+          <option>Missouri </option>
+          <option>Montana </option>
+          <option>Nebraska </option>
+          <option>Nevada </option>
+          <option>New Hampshire </option>
+          <option>New Jersey </option>
+          <option>New Mexico </option>
+          <option>New York </option>
+          <option>North Carolina </option>
+          <option>North Dakota </option>
+          <option>Ohio </option>
+          <option>Oklahoma </option>
+          <option>Oregon </option>
+          <option>Pennsylvania </option>
+          <option>Rhode Island </option>
+          <option>South Carolina </option>
+          <option>South Dakota </option>
+          <option>Tennessee </option>
+          <option>Texas </option>
+          <option>Utah </option>
+          <option>Vermont </option>
+          <option>Virginia </option>
+          <option>Washington </option>
+          <option>West Virginia </option>
+          <option>Wisconsin </option>
+          <option>Wyoming </option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputZip">Zip</label>
+      <input type="text" class="form-control" id="inputZip" name="delivery_address_ZIP" required>
+    </div>
+        <div class="form-group col-md-12">
+      <label for="Requests">Special Requests?</label>
+      <input type="text" class="form-control" id="Requests" name="notes" >
+    </div>
+  </div>
+
+        <div class="row">
+            <div class="col-md-6"> </div>
+             <div class="col-md-6 text-right">
+                 <button class="btn btn-primary" type="submit" > Complete Order </button>
+             </div>
+        </div>
+            <p>   </p>
+
+
+
+
+
+
+    </form>
+
+</div>
+
+<!-- TODO This is buried by the footer -->
+<!-- Currently there is an invisible char (alt+255) between the <p> to give it an extra line -->
+<p>   </p> <br>
+
+{% endblock %}

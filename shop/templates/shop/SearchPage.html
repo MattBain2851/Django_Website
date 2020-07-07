@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    #listBorders li {
+        margin-bottom: 6px;
+        border-top: 2px solid gray;
+        border-bottom: 2px solid gray;
+        bottom-padding: 2px;
+    }
+</style>
+
+<h1 class="text-center">{{ "Start shopping!"}}</h1>
+<div class="form-row justify-content-center">
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <form action="{% url 'shop:store_result' %}" method="GET" style="border: 3px solid #000000;width: 100%;">
+        <input type="submit" style="float:right;vertical-align: middle;height: 100%;" value="Search">
+        <div style="overflow: hidden; padding-right: .5em;">
+            {% csrf_token %}
+            <input type="text" class="form-control" name="ItemName" placeholder="Eg. Crackers..." style="width: 110%;">
+        </div>
+    </form>
+
+</div>
+
+<p>
+    <bl />
+</p>
+
+<h4> Check Out Our Recommended Products!</h4>
+<p>
+    <bl />
+</p>
+<ul id="listBorders" class="list-unstyled">
+
+    <li>
+        <div class="row">
+            <div class="col-md-4">
+                {% for datum in items %}
+                <form class="form-control form-control-sm" action="{% url 'shop:cartadd'%}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <a class="text-center"><img src={{datum.image.sizes.0.url}} class="img-fluid" width="80%"><b>
+                                <!--{{ datum.name }}--></b></a>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                            <div class="d-flex justify-content-start"> {{datum.minimumPriceString}}</div>
+                        </div>
+                        <div class="col">
+                            <input type="hidden" name="item_name" value="{{datum.name}}" />
+                            <input type="hidden" name="item_price" value={{datum.minimumPrice}} />
+                            <input type="hidden" name="item_picture" value="{{datum.image.sizes.0.url}}">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </div>
+
+                    </div>
+                </form>
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                {% for datum in items2 %}
+                <form class="form-control form-control-sm" action="{% url 'shop:cartadd'%}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <a class="text-center"><img src={{datum.image.sizes.0.url}} class="img-fluid" width="80%"><b>
+                                <!--{{ datum.name }}--></b></a>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                            <div class="d-flex justify-content-start"> {{datum.minimumPriceString}}</div>
+                        </div>
+                        <div class="col">
+                            <input type="hidden" name="item_name" value="{{datum.name}}" />
+                            <input type="hidden" name="item_price" value={{datum.minimumPrice}} />
+                            <input type="hidden" name="item_picture" value="{{datum.image.sizes.0.url}}">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </div>
+
+                    </div>
+                </form>
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                {% for datum in items3 %}
+                <form class="form-control form-control-sm" action="{% url 'shop:cartadd'%}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <a class="text-center"><img src={{datum.image.sizes.0.url}} class="img-fluid" width="80%"><b>
+                                <!--{{ datum.name }}--></b></a>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                            <div class="d-flex justify-content-start"> {{datum.minimumPriceString}}</div>
+                        </div>
+                        <div class="col">
+                            <input type="hidden" name="item_name" value="{{datum.name}}" />
+                            <input type="hidden" name="item_price" value={{datum.minimumPrice}} />
+                            <input type="hidden" name="item_picture" value="{{datum.image.sizes.0.url}}">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </div>
+
+                    </div>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    </li>
+</ul>
+{% endblock %}

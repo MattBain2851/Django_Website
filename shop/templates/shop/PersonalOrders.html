@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+{% if user.is_authenticated %}
+{% if order_list %}
+<h1>Orders To Deliver</h1>
+<ul class="list-unstyled">
+    {% for item in order_list %}
+        <div class="row" >
+        <div class="col" style="border: 2px solid black">
+    <li>
+        <div class="row" >
+            <div class="col" style=" background-color: aquamarine">
+                <h5>{{item.time_of_order}}</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col ">
+                <h5>Deliver To:</h5>
+                {{item.delivery_address_PartA}} {{item.delivery_address_PartB}},
+                <br> {{item.delivery_address_City}}, {{item.delivery_address_State}}  {{item.delivery_address_ZIP}}
+
+                <div style='border-bottom:1px solid #ccc;'></div>
+
+                <h5>Items to Get:</h5>
+                {% for shopping_cart in item.item_list.all %}
+                    <ul class="list-unstyled"> <li>
+                        {{shopping_cart.item_quantity}}:     {{shopping_cart.item_name}} </li> </ul>
+                {% endfor %}
+                Special Requests: {{item.notes}} <br>
+
+                <div class="row">
+                    <form id="completeOrder" action="{% url 'shop:personal_orders' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="is_remove" value="c" />
+                        <input type="hidden" name="order_id" value="{{item.order_id}}"/>
+                        <input type="submit" value="Complete Order" />
+                    </form>
+                    <form id="removeItem" action="{% url 'shop:personal_orders' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="is_remove" value="a" />
+                        <input type="hidden" name="order_id" value="{{item.order_id}}"/>
+                        <input type="submit" value="Remove Order" />
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </li>
+                </div>
+    </div>
+    <br>
+    {% endfor %}
+
+    <form id="cartRemoveAll" action="{% url 'shop:personal_orders' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="is_remove_everything" value="a" />
+        <input type="submit" value="Remove All Orders" />
+    </form>
+    <form id="cartCompleteAll" action="{% url 'shop:personal_orders' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="is_remove_everything" value="c" />
+        <input type="submit" value="Complete All Orders" />
+    </form>
+</ul>
+
+
+<b><b><b><b><b>
+
+                    <!-- TODO This is buried by the footer -->
+                    <!-- Currently there is an invisible char (alt+255) between the <p> to give it an extra line -->
+                    <p>   </p> <br>
+                    {% else %}
+                    <p>No items have been added.</p>
+                    {% endif %}
+
+                    {% else %}
+                    <div class="col-sm-6 offset-sm-3 text-center">
+                        Oops! It looks like you aren't logged in. <br> <br>
+                        <a class="btn btn-secondary" href={% url 'social:begin' 'google-oauth2' %}> Sign In</a>
+                    </div>
+                    {% endif %}
+                    <b><b><b><b><b>
+
+
+
+                                        {% endblock %}

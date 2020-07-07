@@ -1,0 +1,8 @@
+gunicorn
+django-heroku
+postgres
+psycopg2
+pytz
+whitenoise
+social-auth-app-django
+Pillow

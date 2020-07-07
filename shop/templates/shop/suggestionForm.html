@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col  text-center">
+    <h1>{{ "Submit a Suggestion!"}}</h1>
+    <h6>This is to ensure we know how we can improve! Thank you for using Caravan!</h6>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <form action="{% url 'shop:suggestionForm' %}" method="post">
+        {% csrf_token %}
+
+        {{form.as_p}}
+
+
+
+        <input type="submit" value="Submit Suggestion">
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<h1>Unclaimed Orders </h1>
+<br>
+<h6>Orders are Displayed by Oldest - Newest</h6>
+{% if order_list %}
+{% for order in order_list %}
+{% if order.recipient_email != user.email %}
+    <form class="form-control form-control-sm" action="{% url 'shop:personal_order_add'%}" method="POST">
+        {% csrf_token %}
+        <ul class = "list-unstyled">
+            {{order.time_of_order}}
+            <div class="col">
+                <div style="overflow: hidden; padding-right: .5em;">
+    <!-- TODO: (LOW PRIORITY) We don't need to pass all this info. Only need to pass notes/status is needed -->
+                <input type="hidden" name="order_id" value={{order.order_id}} />
+                <input type="hidden" name="driver_id" value={{order.driver_id}} />
+                <input type="hidden" name="time" value={{order.time_of_order}} />
+                <input type="hidden" name="items" value={{order.item_list.all}} />
+                <input type="hidden" name="notes" value="{{order.notes}}" />
+                <input type="hidden" name="AddressA" value={{order.delivery_address_PartA}} />
+                <input type="hidden" name="AddressB" value={{order.delivery_address_PartB}} />
+                <input type="hidden" name="AddressCity" value={{order.delivery_address_City}} />
+                <input type="hidden" name="AddressState" value={{order.delivery_address_State}} />
+                <input type="hidden" name="AddressZIP" value={{order.delivery_address_ZIP}} />
+                <input type="hidden" name="status" value="inprogress" />
+                </div>
+                <button type="submit" style="float:right" class="btn btn-primary">Claim Order</button>
+            </div>
+
+            {{order.delivery_address_PartA}} {{order.delivery_address_PartB}} <br>
+            {{order.delivery_address_City}}, {{order.delivery_address_State}} {{order.delivery_address_ZIP}}
+
+            <br>
+        </ul>
+    </form>
+{% else %}
+<form class="form-control form-control-sm" action="{% url 'shop:personal_orders'%}" method="POST">
+    {% csrf_token %}
+    <ul class = "list-unstyled">
+        {{order.time_of_order}}
+        <div class="col">
+            <div style="overflow: hidden; padding-right: .5em;">
+            <input type="hidden" name="is_remove" value="q"/>
+            <input type="hidden" name="order_id" value={{order.order_id}} />
+            </div>
+            <button type="submit" style="float:right" class="btn btn-primary">Cancel Order</button>
+        </div>
+
+        {{order.delivery_address_PartA}} {{order.delivery_address_PartB}} <br>
+        {{order.delivery_address_City}}, {{order.delivery_address_State}} {{order.delivery_address_ZIP}}
+
+        <br>
+    </ul>
+</form>
+{% endif %}
+{% endfor %}
+
+
+{% else %}
+<p>No items have been added.</p>
+{% endif %}
+
+<a class="btn btn-link"href="{% url 'shop:personal_orders' %}" role="button">See Claimed Orders </a>
+
+
+{% endblock %}

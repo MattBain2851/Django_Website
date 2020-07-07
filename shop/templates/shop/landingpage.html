@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+References
+Title: Bootstrap 4 Carousel
+Author: W3Schools
+Date: 11/03
+Code Version: couldn't find it
+URL: https://www.w3schools.com/bootstrap4/bootstrap_carousel.asp
+Software License: Seems copyrighted, but Citing it seems to fall under fair use in a schooling setting, using only small snippets
+
+All Images from https://pixabay.com/ "Pixabay is a vibrant community of creatives, sharing copyright free images and videos.
+All contents are released under the Pixabay License, which makes them safe to use without asking for permission or
+giving credit to the artist - even for commercial purposes."
+-->
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+  /* Make the image fully responsive */
+  .carousel-inner img {
+      width: 100%;
+      height: 100%;
+  }
+  </style>
+</head>
+
+<body>
+<div class="text-center">
+  <h1 class="text-center">Welcome to Caravan!</h1>
+  <h2><small class="text-muted ">See what Caravan Can Do for You</small></h2>
+</div>
+
+<div id="Landing" class="carousel slide" data-ride="carousel">
+
+  <!-- Indicators -->
+  <ul class="carousel-indicators">
+    <li data-target="#Landing" data-slide-to="0" class="active"></li>
+    <li data-target="#Landing" data-slide-to="1"></li>
+    <li data-target="#Landing" data-slide-to="2"></li>
+  </ul>
+
+  <!-- The slideshow -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static '/shop/images/birds_eye.jpg' %}" alt="Bird's Eye" width="1100" height="500">
+      <div class="carousel-caption d-none d-md-block">
+      <h2>Your Favorite Stores</h2>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static '/shop/images/fruits.jpg' %}" alt="Fruits" width="1100" height="500">
+      <div class="carousel-caption d-none d-md-block">
+      <h2> Your Favorite Foods</h2>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static '/shop/images/aisle.jpg' %}" alt="New York" width="1100" height="500">
+      <div class="carousel-caption d-none d-md-block">
+      <h2> Delivered to Your Door!</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="carousel-control-prev" href="#Landing" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#Landing" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
+</div>
+
+</body>
+<p>
+
+</p>
+
+<p>
+
+</p>
+
+</html>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<!-- I don't know why styles.css isn't working so I had to add it here-->
+<style>
+    #listBorders li {
+        margin-bottom: 6px;
+        border-top: 2px solid aquamarine;
+        border-bottom: 1px solid gray;
+    }
+</style>
+{% if user.is_authenticated %}
+{% if shopping_list %}
+<script>
+    var run_total = 0;
+</script>
+<h1 class="center"> Shopping Cart</h1>
+<ul id="listBorders" class="list-unstyled">
+    {% for item in shopping_list %}
+
+
+    <li style="text-align: right; border;">
+
+        <img src={{item.item_picture}} class="img-fluid" height="20" width="20%" align="left">
+        <!--style="padding:1px;border:thin solid black;"-->
+        <font size="3">{{ item.item_name }} </font><br>
+
+        Price: ${{ item.item_price }} |
+        Quantity:
+        {{item.item_quantity}}
+        <br>
+        <div class="row" style="float:right; padding: 15px;"">
+            <form id=" addItem" action="{% url 'shop:cart' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="add_item" value="a" />
+            <input type="hidden" name="item_name" value="{{item.item_name}}" />
+            <input type="hidden" name="item_quantity" value="{{item.item_quantity}}" />
+            <input class="btn btn-secondary" type="submit" value="+" />
+            </form>
+
+            <form id="removeItem" action="{% url 'shop:cart' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="is_remove" value="a" />
+                <input type="hidden" name="item_name" value="{{item.item_name}}" />
+                <input type="hidden" name="item_quantity" value="{{item.item_quantity}}" />
+                <input class="btn btn-seconday" type="submit" value="-" />
+            </form>
+            <form id="removeAll" action="{% url 'shop:cart' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="is_remove_all" value="a" />
+                <input type="hidden" name="item_name" value="{{item.item_name}}" />
+                <input type="hidden" name="item_quantity" value="{{item.item_quantity}}" />
+                <input class="btn btn-primary" type="submit" value="Remove All" />
+            </form>
+        </div>
+        <br>
+        <br>
+        <br>
+        <script>
+            var quant = parseFloat({{ item.item_quantity }});
+            var price = parseFloat({{ item.item_price }});
+            price = price.toFixed(2) * 100;
+            it_price = quant * price
+            run_total = run_total + it_price;
+            // var total_ind = price * quant;
+            // run_total += total_ind;
+            // document.write(total_ind);
+            document.write("Subtotal: $" + (it_price.toFixed(2) / 100));
+            document.write("<br><br>");
+        </script>
+
+    </li>
+
+    {% endfor %}
+
+    <form id="cartRemoveAll" action="{% url 'shop:cart' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="is_remove_everything" value="a" />
+        <input type="hidden" name="item_name" value="{{item.item_name}}" />
+        <input type="hidden" name="item_quantity" value="{{item.item_quantity}}" />
+        <input class="btn btn-primary" type="submit" value="Remove Every Item" />
+    </form>
+
+    <script>
+        //document.write("<br>");
+        document.write("<h1> Total: $" + run_total.toFixed(2) / 100 + "</h1>");
+    </script>
+
+</ul>
+
+
+<a class="btn btn-primary" href="{% url 'shop:orderform' %}" role="button">Order Now</a>
+
+
+<!-- TODO This is buried by the footer -->
+<!-- Currently there is an invisible char (alt+255) between the <p> to give it an extra line -->
+<p>   </p> <br>
+{% else %}
+<div class="row">
+    <div class="col">
+        <h1>Your Cart is Empty!</h1>
+        <h5> Your Shopping Cart lives to serve - give it purpose by giving it groceries to hold. </h5>
+    </div>
+    <div class="col">
+        <a><img src="{% static '/shop/images/sadcart.png' %}" width="75%" height="90%"></a>
+    </div>
+</div>
+
+
+{% endif %}
+
+{% else %}
+<div class="col-sm-6 offset-sm-3 text-center">
+    Oops! It looks like you aren't logged in. <br> <br>
+    <a class="btn btn-secondary" href={% url 'social:begin' 'google-oauth2' %}> Sign In</a>
+</div>
+{% endif %}
+
+
+
+{% endblock %}

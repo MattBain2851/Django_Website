@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+<div class="row ">
+    <div class=" col col-md m-3" style="border: 2px solid black">
+        <h1>{{ "Thank You for using Caravan!"}} </h1>
+<p>{{"Your order will be on its way shortly."}}</p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+       <form action="{% url 'shop:landing' %}" method="post">
+        {% csrf_token %}
+                <input type="submit" value="Go back to landing page!" class="btn btn-primary">
+           <img src="{% static '/shop/images/c.png' %}" width="50" height="50" alt="">
+       </form>
+
+        <p>    </p>
+
+      <form action="/accounts/profile/" method="post">
+        {% csrf_token %}
+          <input type="submit" value="Check status of your orders!" class="btn btn-warning">
+           <img src="{% static '/shop/images/resume.png' %}" width="50" height="50" alt="">"
+      </form>
+
+        <p>    </p>
+    </div>
+</div>
+
+
+{% endblock %}
